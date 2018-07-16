@@ -10,7 +10,7 @@ module CebuPacFares
   class Fetcher
     attr_reader :query_config
 
-    IS_ASYNC = false
+    IS_ASYNC = true
 
     def initialize(query_config)
       @query_config = query_config
@@ -30,7 +30,7 @@ module CebuPacFares
 
     def send_requests_asynchronously
       map = {}
-      hydra = Typhoeus::Hydra.new
+      hydra = Typhoeus::Hydra.new(max_concurrency: 10)
 
       from_date = query_config.from_date
       to_date = query_config.to_date
