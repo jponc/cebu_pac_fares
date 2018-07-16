@@ -10,7 +10,7 @@ module CebuPacFares
   class Fetcher
     attr_reader :query_config
 
-    IS_ASYNC = true
+    IS_ASYNC = false
 
     def initialize(query_config)
       @query_config = query_config
@@ -18,6 +18,8 @@ module CebuPacFares
 
     def fetch
       if IS_ASYNC
+        # NOTE: Very dangerous, your IP can be blocked!
+        #
         send_requests_asynchronously
       else
         send_requests_synchronously
@@ -60,6 +62,9 @@ module CebuPacFares
         response_body = open(url).read
         map[date.to_s] = extract_flights(response_body)
       end
+
+      sleep(5)
+
       map
     end
 
